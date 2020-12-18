@@ -1,6 +1,5 @@
 package util;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -45,9 +44,24 @@ public class FileReader {
         }
     }
 
-    public static void main(String[] args) throws IOException {
-        FileReader tesReader = new FileReader("contacts.txt", "data", "error.log");
+    //method to read file
+    public List<String> read(Path filePath) throws IOException {
+        return Files.readAllLines(filePath);
+    }
 
+    public void write(Path filePath, List<String> contact) throws IOException {
+        Files.write(filePath, contact, StandardOpenOption.APPEND);
+    }
+
+    public void delete(Path filePath, List<String> contact) throws IOException {
+    }
+
+
+    public static void main(String[] args) throws IOException {
+        FileReader testReader = new FileReader("contacts.txt", "data", "error.log");
+        Path contactFile = testReader.getFilePath();
+        testReader.write(contactFile,Arrays.asList("\n" + "Sam Sampson" + "|" + "1231234"));
+        System.out.println(testReader.read(contactFile));
     }
 
 
