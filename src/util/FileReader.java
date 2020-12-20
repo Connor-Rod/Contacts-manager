@@ -53,15 +53,16 @@ public class FileReader {
         Files.write(filePath, contact, StandardOpenOption.APPEND);
     }
 
+    public void writeError(Path logFilePath, List<String> list) throws IOException {
+        Files.write(logFilePath, list, StandardOpenOption.APPEND);
+    }
+
     public void delete(Path filePath, List<String> contact) throws IOException {
     }
 
 
     public static void main(String[] args) throws IOException {
-        FileReader testReader = new FileReader("contacts.txt", "data", "error.log");
-        Path contactFile = testReader.getFilePath();
-        testReader.write(contactFile,Arrays.asList("\n" + "Sam Sampson" + "|" + "1231234"));
-        System.out.println(testReader.read(contactFile));
+
     }
 
 
