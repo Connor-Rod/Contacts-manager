@@ -2,6 +2,8 @@ package contacts;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Stack;
 
 public class ContactFormat {
 
@@ -25,8 +27,13 @@ public class ContactFormat {
         return menu;
     }
 
-    public ContactFormat(){
-
+    public static StringBuilder allContactFormat(List<String> contactList){
+        StringBuilder contacts = new StringBuilder();
+        contacts.append("Name  |  Phone Number|").append("\n");
+        for (var i =0; i<contactList.size(); i++) {
+            contacts.append(contactList.get(i)).append("\n");
+        }
+        return contacts;
     }
 
     public ArrayList<String> getMenuOptions() {

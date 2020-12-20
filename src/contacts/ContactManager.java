@@ -21,6 +21,10 @@ public class ContactManager {
 
         System.out.println(ContactFormat.menuFormatter());
         String menuSelection = input.getString();
-        input.phoneValidation(menuSelection);
+        switch (menuSelection) {
+            case "1":
+                System.out.println(ContactFormat.allContactFormat(testReader.read(contactFile)));
+        }
+//        input.phoneValidation(menuSelection);
     }
 }
