@@ -1,10 +1,14 @@
 package util;
 
+import contacts.Contact;
+
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,6 +22,7 @@ public class FileReader {
     private Path directoryPath;
     private List<String> fileLines;
     private Path logFilePath;
+    private final List<Contact> contactList = new ArrayList<>();
 
     //constructor
     public FileReader(String fileName, String directoryName, String logFileName) throws IOException {
@@ -45,11 +50,15 @@ public class FileReader {
     }
 
     //method to read file
-    public List<String> read(Path filePath) throws IOException {
-        return Files.readAllLines(filePath);
+    public List<Contact> read(Path filePath) throws IOException {
+        List<String> contacts = Files.readAllLines(filePath);
+        for (String contact: contacts) {
+            contactList.add(new Contact(contact.substring(0, contact.indexOf("|")).trim(),contact.substring(contact.indexOf("|")).trim()));
+        }
+        return contactList;
     }
 
-    public void write(Path filePath, List<String> contact) throws IOException {
+    public void writeContact(Path filePath, List<String> contact) throws IOException {
         Files.write(filePath, contact, StandardOpenOption.APPEND);
     }
 
@@ -57,7 +66,19 @@ public class FileReader {
         Files.write(logFilePath, list, StandardOpenOption.APPEND);
     }
 
-    public void delete(Path filePath, List<String> contact) throws IOException {
+    public void delete(Path filePath, String name) throws IOException {
+       List<Contact> deleteList = this.read(filePath);
+       List<Contact> newList = new ArrayList<>();
+       for (Contact contact: deleteList) {
+           if (contact.getName().equalsIgnoreCase(name)) {
+               continue;
+           }
+           newList.add(contact);
+       }
+       Files.write(filePath, Arrays.asList(""),StandardOpenOption.TRUNCATE_EXISTING);
+       for(Contact contact: newList) {
+           Files.write(filePath, Arrays.asList(contact.getName() + " " + contact.getPhone()), StandardOpenOption.APPEND );
+       }
     }
 
 

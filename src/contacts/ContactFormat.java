@@ -7,7 +7,7 @@ import java.util.Stack;
 
 public class ContactFormat {
 
-    private static ArrayList<String> menuOptions = new ArrayList<>(
+    private static final ArrayList<String> menuOptions = new ArrayList<>(
             Arrays.asList(
                     "View contacts.",
                     "Add a new contact.",
@@ -27,22 +27,15 @@ public class ContactFormat {
         return menu;
     }
 
-    public static StringBuilder allContactFormat(List<String> contactList){
+    public static StringBuilder allContactFormat(List<Contact> contactList){
         StringBuilder contacts = new StringBuilder();
         contacts.append("Name  |  Phone Number|").append("\n");
-        for (var i =0; i<contactList.size(); i++) {
-            contacts.append(contactList.get(i)).append("\n");
+        for (Contact contact : contactList) {
+            contacts.append(contact.getName()).append(" ").append(contact.getPhone()).append("\n");
         }
         return contacts;
     }
 
-    public ArrayList<String> getMenuOptions() {
-        return menuOptions;
-    }
-
-    public void setMenuOptions(ArrayList<String> menuOptions) {
-        this.menuOptions = menuOptions;
-    }
 }
 
 

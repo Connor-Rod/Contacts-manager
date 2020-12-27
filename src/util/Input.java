@@ -1,9 +1,10 @@
 package util;
 
+import contacts.Contact;
+
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Scanner;
+import java.nio.file.Path;
+import java.util.*;
 
 public class Input {
 
@@ -17,9 +18,6 @@ public class Input {
         return sc.nextLine();
     }
 
-    public FileReader testReader = new FileReader("contacts.txt", "data", "error.log");
-
-
 //    public static String getString(String prompt) {
 //        System.out.println(prompt);
 //        return getString();
@@ -31,25 +29,52 @@ public class Input {
 //        return (userInput.equals("y") | userInput.equals("yes"));
 //    }
 
-    public void phoneValidation(String phoneNumber) throws IOException {
-        if (phoneNumber.length() == 7 | phoneNumber.length() == 10) {
+    public String phoneValidation(FileReader reader) throws IOException {
+        System.out.println("enter a phone number");
+        userInput = sc.nextLine().trim();
+        if (userInput.length() == 7 | userInput.length() == 10) {
            try {
-               Integer.parseInt(phoneNumber);
-               System.out.println(phoneNumber);
-               return;
+               Long.parseLong(userInput);
+               System.out.println(userInput);
+               return userInput;
            } catch (Exception e) {
-               e.printStackTrace();
-               System.out.println();
                for (StackTraceElement errorLine : e.getStackTrace() ) {
-                   testReader.writeError(testReader.getLogFilePath(), (Collections.singletonList(errorLine.toString())));
+                   reader.writeError(reader.getLogFilePath(), (Collections.singletonList(errorLine.toString())));
+                return phoneValidation(reader);
                }
-                return;
             }
         }
-        System.out.println("Wrong phone #");
+        System.out.println("not a phone #");
+        return phoneValidation(reader);
+    }
+    
+    public String nameValidation () {
+        System.out.println("enter a first and last name.");
+        userInput = sc.nextLine().trim();
+        if (userInput.contains("\s")) {
+            return userInput;
+        }
+        return nameValidation();
     }
 
-    public boolean nameValidation(String prompt) {
+    public List<Contact> searchName (Path file, FileReader reader) throws IOException {
+        System.out.println("search a name.");
+        List<Contact> searched = new ArrayList<>();
+        String userSearch = sc.nextLine().trim();
+       List<Contact> contactList = reader.read(file);
+       for(Contact contact: contactList) {
+           if ((contact.getName().equalsIgnoreCase(userSearch))) {
+               searched.add(contact);
+           } else if ((contact.getName().substring(0, contact.getName().indexOf(" ")).equalsIgnoreCase(userSearch))) {
+               searched.add(contact);
+           } else if ((contact.getName().substring(contact.getName().indexOf(" ")).trim().equalsIgnoreCase(userSearch))) {
+               searched.add(contact);
+           }
+       }
+       return searched;
+    }
+
+    public boolean moveOn(String prompt) {
         System.out.printf("%s", prompt);
 
         return (userInput.equals("y") | userInput.equals("yes"));
