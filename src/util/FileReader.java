@@ -75,9 +75,9 @@ public class FileReader {
            }
            newList.add(contact);
        }
-       Files.write(filePath, Arrays.asList(""),StandardOpenOption.TRUNCATE_EXISTING);
-       for(Contact contact: newList) {
-           Files.write(filePath, Arrays.asList(contact.getName() + " " + contact.getPhone()), StandardOpenOption.APPEND );
+       Files.write(filePath, Arrays.asList(newList.get(0).getName() + " " + newList.get(0).getPhone()),StandardOpenOption.TRUNCATE_EXISTING);
+       for(var i = 1; i < newList.size(); i++) {
+           Files.write(filePath, Arrays.asList(newList.get(i).getName() + " " + newList.get(i).getPhone()), StandardOpenOption.APPEND );
        }
     }
 

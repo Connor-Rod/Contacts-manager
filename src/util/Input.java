@@ -4,6 +4,7 @@ import contacts.Contact;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.*;
 
 public class Input {
@@ -23,20 +24,31 @@ public class Input {
 //        return getString();
 //    }
 
-//    public boolean yesNo(String prompt) {
-//        System.out.printf("%s", prompt);
-//        String userInput = getString().toLowerCase();
-//        return (userInput.equals("y") | userInput.equals("yes"));
-//    }
+    public boolean yesNo(String prompt) {
+        System.out.printf("%s", prompt);
+        String userInput = getString().toLowerCase();
+        return (userInput.equals("y") | userInput.equals("yes"));
+    }
+
+    public boolean yesNo() {
+        return yesNo("\nWould you like to continue?");
+    }
 
     public String phoneValidation(FileReader reader) throws IOException {
         System.out.println("enter a phone number");
         userInput = sc.nextLine().trim();
-        if (userInput.length() == 7 | userInput.length() == 10) {
+        if ((userInput.length() == 8 | userInput.length() == 12) | (userInput.length() == 7 | userInput.length() == 10))  {
            try {
+               if (userInput.contains("-")) {
+                  userInput = userInput.replaceAll("-", "");
+               }
                Long.parseLong(userInput);
-               System.out.println(userInput);
-               return userInput;
+               if (getUserInput().length() == 7) {
+                   return userInput.substring(0,3) + "-" + userInput.substring(3);
+               }
+               else {
+                   return userInput.substring(0,3) + "-" + userInput.substring(3,6) + "-" + userInput.substring(6);
+               }
            } catch (Exception e) {
                for (StackTraceElement errorLine : e.getStackTrace() ) {
                    reader.writeError(reader.getLogFilePath(), (Collections.singletonList(errorLine.toString())));
@@ -48,13 +60,27 @@ public class Input {
         return phoneValidation(reader);
     }
     
-    public String nameValidation () {
+    public String nameValidation (FileReader reader) throws IOException {
         System.out.println("enter a first and last name.");
         userInput = sc.nextLine().trim();
         if (userInput.contains("\s")) {
+            List<Contact> contacts = reader.read(reader.getFilePath());
+            List<String> contactNames = new ArrayList<>();
+//            for (Contact contact : contacts) {
+//                    contactNames.add(contact.getName());
+//            }
+//            if (contactNames.contains(userInput)) {
+//                if (!yesNo("There's already a contact named: "+ userInput + " Do you want to overwrite it? (Yes/No)")) {
+//                    nameValidation(reader);
+//                } else {
+//                    reader.delete(reader.getFilePath(), contactNames.get(contactNames.indexOf(userInput)));
+////                        reader.writeContact(reader.getLogFilePath(), Arrays.asList((userInput) + " | " +  phoneValidation(reader)));
+//                }
+//            }
             return userInput;
+        } else {
+            return nameValidation(reader);
         }
-        return nameValidation();
     }
 
     public List<Contact> searchName (Path file, FileReader reader) throws IOException {
