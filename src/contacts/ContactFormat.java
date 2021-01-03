@@ -27,11 +27,14 @@ public class ContactFormat {
         return menu;
     }
 
-    public static StringBuilder allContactFormat(List<Contact> contactList){
+    public static StringBuilder allContactFormat(List<String> contactList){
         StringBuilder contacts = new StringBuilder();
-        contacts.append("Name  |  Phone Number|").append("\n");
-        for (Contact contact : contactList) {
-            contacts.append(contact.getName()).append(" ").append(contact.getPhone()).append("\n");
+        contacts.append("Name             |         Phone Number |")
+                .append("\n")
+                .append("-----------------------------------------")
+                .append("\n");
+        for (String contact : contactList) {
+            contacts.append(contact, 0, contact.indexOf("|")).append(" ").append(contact, contact.indexOf("|"), contact.length()).append("\n");
         }
         return contacts;
     }

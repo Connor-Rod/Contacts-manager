@@ -23,18 +23,8 @@ public class ContactManager {
             switch (menuSelection) {
                 case "1" -> System.out.println(ContactFormat.allContactFormat(testReader.read(contactFile)));
                 case "2" -> {
-                    String contactFormatting = "";
-                    int space;
                     Contact contact = new Contact(input.nameValidation(testReader), input.phoneValidation(testReader));
-                    for (Contact singleContact : testReader.read(contactFile)) {
-                        if (singleContact.getName().length() > contact.getName().length()) {
-                            contactFormatting = String.format("%-"+ singleContact.getName().length() +"s | %-12s |", contact.getName(), contact.getPhone());
-                        } else {
-                            contactFormatting = String.format("%-"+ contact.getName().length() +"s | %-12s |", contact.getName(), contact.getPhone());
-                        }
-                    }
-                    testReader.writeContact(testReader.getFilePath(), Arrays.asList(contactFormatting));
-                    System.out.printf("Contact: %s successfully added with phone number: %s.", contact.getName(), contact.getPhone());
+                    input.addContact(contact, testReader);
                     }
                 case "3" -> System.out.println(ContactFormat.allContactFormat(input.searchName(testReader.getFilePath(), testReader)));
                 case "4" -> {

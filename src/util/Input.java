@@ -19,11 +19,6 @@ public class Input {
         return sc.nextLine();
     }
 
-//    public static String getString(String prompt) {
-//        System.out.println(prompt);
-//        return getString();
-//    }
-
     public boolean yesNo(String prompt) {
         System.out.printf("%s", prompt);
         String userInput = getString().toLowerCase();
@@ -64,50 +59,38 @@ public class Input {
         System.out.println("enter a first and last name.");
         userInput = sc.nextLine().trim();
         if (userInput.contains("\s")) {
-            List<Contact> contacts = reader.read(reader.getFilePath());
+            List<String> contacts = reader.read(reader.getFilePath());
             List<String> contactNames = new ArrayList<>();
-//            for (Contact contact : contacts) {
-//                    contactNames.add(contact.getName());
-//            }
-//            if (contactNames.contains(userInput)) {
-//                if (!yesNo("There's already a contact named: "+ userInput + " Do you want to overwrite it? (Yes/No)")) {
-//                    nameValidation(reader);
-//                } else {
-//                    reader.delete(reader.getFilePath(), contactNames.get(contactNames.indexOf(userInput)));
-////                        reader.writeContact(reader.getLogFilePath(), Arrays.asList((userInput) + " | " +  phoneValidation(reader)));
-//                }
-//            }
             return userInput;
         } else {
             return nameValidation(reader);
         }
     }
 
-    public List<Contact> searchName (Path file, FileReader reader) throws IOException {
+    public List<String> searchName (Path file, FileReader reader) throws IOException {
         System.out.println("search a name.");
-        List<Contact> searched = new ArrayList<>();
+        List<String> searched = new ArrayList<>();
         String userSearch = sc.nextLine().trim();
-       List<Contact> contactList = reader.read(file);
-       for(Contact contact: contactList) {
-           if ((contact.getName().equalsIgnoreCase(userSearch))) {
+       List<String> contactList = reader.read(file);
+       for(String contact: contactList) {
+           String trim = contact.substring(0, contact.indexOf("|")).trim();
+           String first = trim.substring(0, contact.indexOf(" ")).trim();
+           String last = trim.substring(contact.indexOf(" ")).trim();
+           if (trim.equalsIgnoreCase(userSearch)) {
                searched.add(contact);
-           } else if ((contact.getName().substring(0, contact.getName().indexOf(" ")).equalsIgnoreCase(userSearch))) {
+           } else if ((first.equalsIgnoreCase(userSearch))) {
                searched.add(contact);
-           } else if ((contact.getName().substring(contact.getName().indexOf(" ")).trim().equalsIgnoreCase(userSearch))) {
+           } else if (last.equalsIgnoreCase(userSearch)) {
                searched.add(contact);
            }
        }
        return searched;
     }
 
-    public boolean moveOn(String prompt) {
-        System.out.printf("%s", prompt);
-
-        return (userInput.equals("y") | userInput.equals("yes"));
-    }
-
-    public Scanner getSc() {
-        return sc;
+    public void addContact(Contact contact, FileReader testReader) throws IOException {
+        String contactFormatting = String.format("%-15s | %20s |", contact.getName(), contact.getPhone());
+        testReader.writeContact(testReader.getFilePath(), Arrays.asList(contactFormatting));
+        System.out.printf("Contact: %s successfully added with phone number: %s.", contact.getName(), contact.getPhone());
     }
 
     public String getUserInput() {

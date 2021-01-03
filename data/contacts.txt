@@ -1,5 +1,2 @@
-bob marley | 123-456-7890 |
-jack blank | 231-412-9089 |
-jane doe | 789-8902  |
-ziggy marley | 123-456-7890 |
-jane doe     | 098-765-4231 |
+jack black      |         377-465-7874 |
+jane doe        |         377-485-7764 |
