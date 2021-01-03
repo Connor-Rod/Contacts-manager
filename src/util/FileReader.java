@@ -50,12 +50,12 @@ public class FileReader {
     }
 
     //method to read file
-    public List<Contact> read(Path filePath) throws IOException {
-        List<String> contacts = Files.readAllLines(filePath);
-        for (String contact: contacts) {
-            contactList.add(new Contact(contact.substring(0, contact.indexOf("|")).trim(),contact.substring(contact.indexOf("|")).trim()));
-        }
-        return contactList;
+    public List<String> read(Path filePath) throws IOException {
+        return Files.readAllLines(filePath);
+//        for (String contact: contacts) {
+//            contactList.add(new Contact(contact.substring(0, contact.indexOf("|")).trim(),contact.substring(contact.indexOf("|")).trim()));
+//        }
+//        return contactList;
     }
 
     public void writeContact(Path filePath, List<String> contact) throws IOException {
@@ -67,29 +67,24 @@ public class FileReader {
     }
 
     public void delete(Path filePath, String name) throws IOException {
-       List<Contact> deleteList = this.read(filePath);
-       List<Contact> newList = new ArrayList<>();
-       for (Contact contact: deleteList) {
-           if (contact.getName().equalsIgnoreCase(name)) {
+       List<String> deleteList = this.read(filePath);
+        System.out.println(deleteList);
+        List<String> newList = new ArrayList<>();
+       for (String contact: deleteList) {
+           String trim = contact.substring(0, contact.indexOf("|")).trim();
+           if (trim.equalsIgnoreCase(name)) {
                continue;
            }
-           newList.add(contact);
+           newList.add(String.format("%-15s | %-20s |", trim, contact.substring(contact.indexOf("|"))));
        }
-       Files.write(filePath, Arrays.asList(newList.get(0).getName() + " " + newList.get(0).getPhone()),StandardOpenOption.TRUNCATE_EXISTING);
-       for(var i = 1; i < newList.size(); i++) {
-           Files.write(filePath, Arrays.asList(newList.get(i).getName() + " " + newList.get(i).getPhone()), StandardOpenOption.APPEND );
+       if (newList.size() > 0) {
+            Files.write(filePath, Arrays.asList(newList.get(0)),StandardOpenOption.TRUNCATE_EXISTING);
+            for(var i = 1; i < newList.size(); i++) {
+               Files.write(filePath, Arrays.asList(newList.get(i)), StandardOpenOption.APPEND );
+            }
        }
+       else Files.write(filePath, Arrays.asList(""),StandardOpenOption.TRUNCATE_EXISTING);
     }
-
-
-    public static void main(String[] args) throws IOException {
-
-    }
-
-
-
-
-
 
     //getters and setters
     public String getFileName() {
