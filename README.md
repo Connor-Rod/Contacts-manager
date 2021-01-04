@@ -1,24 +1,3 @@
 # Contacts-manager
 
-##needed Classes
-
- ###File Reader
-
-- Constructor
-- read method
-- Write method
-- Delete method
-
-##contacts package
-
-- ###abstract Contacts class
-    - Constructor
-  - private fields with getters and setters
-  -   
-- ###Contact class extends contacts
-    - Constructor calls super
-
-
-###Contact manager app entry point
-
-- Main method here
+-Java command line interface application that allows a user to view, add, edit or delete a list of contacts using File I/O
