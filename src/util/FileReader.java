@@ -75,7 +75,7 @@ public class FileReader {
            if (trim.equalsIgnoreCase(name)) {
                continue;
            }
-           newList.add(String.format("%-15s | %-20s |", trim, contact.substring(contact.indexOf("|"))));
+           newList.add(String.format("%-16s%-20s", trim, contact.substring(contact.indexOf("|"))));
        }
        if (newList.size() > 0) {
             Files.write(filePath, Arrays.asList(newList.get(0)),StandardOpenOption.TRUNCATE_EXISTING);
