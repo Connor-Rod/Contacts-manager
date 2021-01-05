@@ -58,7 +58,7 @@ public class Input {
         System.out.println("enter a first and last name.");
         userInput = sc.nextLine().trim();
         if (userInput.contains("\s")) {
-            return userInput;
+            return userInput.toLowerCase();
         } else {
             return nameValidation();
         }
@@ -110,13 +110,14 @@ public class Input {
             if (userOverride.equalsIgnoreCase("y") || userOverride.equalsIgnoreCase("yes")) {
                 testReader.delete(testReader.getFilePath(), searchName(file, testReader, contact.getName()).get(0));
                 testReader.writeContact(testReader.getFilePath(), Arrays.asList(contactFormatting));
+                System.out.printf("Contact: %s successfully added with phone number: %s.", contact.getName(), contact.getPhone());
             } else {
-                addContact(contact, testReader, file);
+                addContact(new Contact(this.nameValidation(), this.phoneValidation(testReader)), testReader, file);
             }
         } else {
             testReader.writeContact(testReader.getFilePath(), Arrays.asList(contactFormatting));
+            System.out.printf("Contact: %s successfully added with phone number: %s.", contact.getName(), contact.getPhone());
         }
-        System.out.printf("Contact: %s successfully added with phone number: %s.", contact.getName(), contact.getPhone());
     }
 
     public String getUserInput() {

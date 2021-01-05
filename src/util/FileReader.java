@@ -52,10 +52,6 @@ public class FileReader {
     //method to read file
     public List<String> read(Path filePath) throws IOException {
         return Files.readAllLines(filePath);
-//        for (String contact: contacts) {
-//            contactList.add(new Contact(contact.substring(0, contact.indexOf("|")).trim(),contact.substring(contact.indexOf("|")).trim()));
-//        }
-//        return contactList;
     }
 
     public void writeContact(Path filePath, List<String> contact) throws IOException {
@@ -68,7 +64,6 @@ public class FileReader {
 
     public void delete(Path filePath, String name) throws IOException {
        List<String> deleteList = this.read(filePath);
-        System.out.println(deleteList);
         List<String> newList = new ArrayList<>();
        for (String contact: deleteList) {
            String trim = contact.substring(0, contact.indexOf("|")).trim();
